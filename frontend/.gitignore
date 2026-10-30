@@ -1,0 +1,80 @@
+
+# ==============================
+# SHEild - Git Ignore
+# ==============================
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Google Maps API keys
+frontend/.env
+frontend/.env.local
+frontend/.env.*
+backend/.env
+backend/.env.*
+
+# Frontend - Node / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+frontend/coverage/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/pnpm-debug.log*
+
+# Backend - Python
+backend/.venv/
+backend/venv/
+backend/env/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.py[cod]
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.ruff_cache/
+backend/htmlcov/
+backend/.coverage
+
+# Python virtual environments and cache
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build and temporary files
+tmp/
+temp/
+.cache/
