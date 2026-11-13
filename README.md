@@ -1,172 +1,86 @@
-# 🛡️ SHEild — AI-Assisted Public Safety Platform
+# SHEild
 
-**Smart technology for safer communities.**
+**A public-safety and crime-awareness prototype for Amritsar.**
 
-SHEild is an open-innovation hackathon project focused on public safety, crime awareness, and accessible emergency information. Initially focused on Amritsar, Punjab, India, the platform aims to bring useful safety information together in one place.
+SHEild combines a React/TypeScript interface with a FastAPI/SQLite backend for
+public facility maps, source-linked historical crime data, trusted contacts
+and incident-report learning workflows. It is a hackathon prototype, not a
+phishing detector, crime predictor or verified emergency-response system.
 
-## 🎯 Problem Statement
+## Features and boundaries
 
-People often lack access to organized, location-based safety information. Details about reported incidents, emergency facilities, and personal safety resources are scattered across different sources.
+- Map/facility information from OpenStreetMap-backed services and a Google Maps view.
+- Historical crime information with source/date/geographic limitations.
+- Contact and incident-report CRUD for a local lab.
+- Remaining DNS/HTTP/TLS research helpers are not proof of an active scam-detection feature.
+- ChatGPT-assisted development is distinct from runtime AI: a deployed OpenAI
+  integration is not a verified current feature.
 
-SHEild aims to make this information easier to access through an interactive, technology-driven platform.
+## Local setup
 
-## ✨ Key Features
+Install Python with virtual-environment support, Git and Node.js/npm. Use a
+disposable local lab and synthetic contact/report data.
 
-- 🗺️ **Interactive Safety Map:** Google Maps integration centered on Amritsar.
-- 🚨 **Incident Awareness:** Map-based visualization of reported incidents.
-- 🏥 **Emergency Facilities:** Display of available police stations and hospitals when verified data is available.
-- 📊 **Safety Dashboard:** Centralized safety information and visual insights.
-- 📋 **Crime Reports:** Dedicated section for crime-related information.
-- 👥 **Trusted Contacts:** Emergency contact management.
-- 🛡️ **Safety Resources:** Personal safety awareness and helpful information.
-
-## 🤖 OpenAI & ChatGPT — AI Technology
-
-OpenAI technologies are part of the SHEild development approach.
-
-**OpenAI ChatGPT usage:**
-- Project planning and problem-solving.
-- AI-assisted coding and debugging.
-- Frontend and backend development assistance.
-- Documentation and technical explanations.
-- Brainstorming future AI-powered safety features.
-
-**Planned AI capabilities:**
-- AI-assisted analysis of verified incident reports.
-- Natural-language summaries of safety information.
-- Intelligent safety information assistance.
-- Context-aware safety recommendations based on reliable information.
-
-**AI integration status:** ChatGPT is used as a development assistant. Runtime integration through the OpenAI API is a planned enhancement, not a currently verified application feature.
-
-## 🧰 Technology Stack
-
-| Component | Technology |
-|---|---|
-| Frontend | React 19 |
-| Build Tool | Vite |
-| Language | TypeScript |
-| Styling | Tailwind CSS |
-| Backend | Python, FastAPI |
-| Maps | Google Maps JavaScript API |
-| Charts | Recharts |
-| Icons | Lucide React |
-| AI Development Assistant | OpenAI ChatGPT |
-| Planned AI API | OpenAI API |
-
-## 🏗️ System Architecture
-
-```text
-                 SHEild Platform
-                       |
-          +------------+------------+
-          |                         |
-       Frontend                  Backend
-  React + TypeScript             FastAPI
-          |                         |
-          |                     Database
-          |
-    Google Maps API
-
-    OpenAI ChatGPT
-    Development Assistance
-
-    OpenAI API
-    Planned AI Integration
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js and npm
-- Python 3
-- Git
-- Google Maps API key
-
-### Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/SHEild.git
+```sh
+git clone https://github.com/Yuvraj-26-k/SHEild.git
 cd SHEild
 ```
 
-### Frontend setup
-
-```bash
-cd frontend
-npm install
-```
-
-Create `frontend/.env.local`:
-
-```env
-VITE_GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
-```
-
-Start the frontend:
-
-```bash
-npm run dev
-```
-
-Open `http://localhost:5173`.
-
-### Backend setup
-
-```bash
-cd backend
-python -m venv .venv
-```
-
-Activate on Windows:
+Backend, from the repository root on Windows:
 
 ```powershell
-.venv\Scripts\Activate.ps1
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install fastapi uvicorn httpx dnspython certifi
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000
 ```
 
-Install dependencies:
+On Linux/macOS, create the environment with `python3 -m venv .venv` and use
+`.venv/bin/python` in place of the Windows interpreter path. There is no tracked
+backend requirements file yet; the command lists packages used by the reviewed
+Python modules. A pinned dependency manifest and clean-install verification are
+still needed.
 
-```bash
-pip install -r requirements.txt
+Frontend, in a second terminal:
+
+```sh
+cd frontend
+npm install
+npm run dev -- --host 127.0.0.1
 ```
 
-Start the backend:
+Set `VITE_GOOGLE_MAPS_API_KEY` in a local `frontend/.env.local` file for the map
+view. Use an appropriately restricted browser key and never commit private
+credentials. The browser calls the backend at `127.0.0.1:8000`. External data
+services require connectivity and can be unavailable or incomplete.
 
-```bash
-uvicorn main:app --reload
+## Architecture
+
+```mermaid
+flowchart LR
+    Browser[React UI] --> API[FastAPI safety routes]
+    API --> DB[(Local SQLite)]
+    API --> Sources[Public facilities and crime-data sources]
+    Browser --> Maps[Google Maps view]
 ```
 
-API documentation: `http://127.0.0.1:8000/docs`
+`backend/app/main.py` is the active entry point. The two registered routers
+currently overlap on contact/report paths; resolving that ambiguity is a
+known implementation task. Source dates and approximate locations must remain
+visible; the map does not establish that a locality is unsafe.
 
-*The backend command assumes the FastAPI instance is named `app` in `main.py`.*
+## Security, privacy and status
 
-## 🔮 Future Scope
+The reviewed contact/report endpoints do not implement per-user authorization.
+Keep the app local; do not enter real contacts, private incident information or
+client data. The audited tracked database was empty, but runtime writes can
+introduce personal information. Do not mistake a local prototype for a secure
+multi-user service.
 
-- OpenAI API integration for intelligent safety assistance.
-- AI-assisted incident report summarization.
-- Improved emergency facility coverage.
-- Real-time verified safety information where data sources permit.
-- Emergency alerts and trusted-contact workflows.
-- Multilingual support.
-- Expansion to additional cities.
+Tracked dependencies/bytecode and duplicate routes remain in source; this
+documentation change does not remove or fix them. `Cyber.py` is empty. There
+are no first-party tests, and no sanitized application screenshot has been
+verified for this README. `npm run build` and `npm run lint` are available in
+`frontend`; a successful build alone would not validate external data sources.
 
-## 🔐 Security & Privacy
-
-- API keys and secrets must never be committed to GitHub.
-- Incident information should include sources and dates.
-- Approximate locations must be clearly identified.
-- Personal information should be protected through appropriate security controls.
-
-## 📍 Project Information
-
-| Detail | Information |
-|---|---|
-| Project | SHEild |
-| Category | AI / Public Safety / Social Impact |
-| Initial Focus | Amritsar, Punjab, India |
-| AI Technology | OpenAI ChatGPT |
-| Development | Open Innovation Hackathon |
-
----
-
-**SHEild — Technology with a purpose. Building safer communities through innovation.** 🛡️
+Next priorities: authorization and data lifecycle, route deduplication, pinned
+backend dependencies, clean installs, synthetic fixtures and a documented demo.
